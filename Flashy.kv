@@ -1,0 +1,185 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import FileBrowser kivy.garden.filebrowser.FileBrowser
+
+<FloatButton@Button>:
+    size_hint: (None, None)
+    size: (70, 70)
+    background_normal: ''
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: (.53, .4, .59, 1)
+        Ellipse:
+            size: self.size
+            pos: self.pos
+
+<SM>:
+    transition: FadeTransition()
+    OS:
+    TS:
+    SS:
+
+<OS>:
+    name: 'Open'
+    BoxLayout:
+        id: Open_Layout
+        orientation: 'vertical'
+        padding: 5, 5, 5, 5
+
+        Label:
+            text: 'Please select a file to begin.'
+            font_name: 'times'
+            font_size: 50
+            height: root.height / 4
+            size_hint_y: None
+
+        BoxLayout:
+            # Label:
+            #     size_hint_x: None
+            #     width: (root.width - Presets.width) / 2
+
+            # DropDown:
+            #     id: Presets
+            #     pos_hint: {'center_x': 0.5, 'y': .75}
+            #     size: 300, 25
+            #     size_hint: None, None
+            #
+            #     Button:
+            #         text: 'Choose a sample file'
+            #         size: 300, 25
+            #         size_hint: None, None
+            #         background_normal: ''
+            #         background_color: 0, 0, 0, 0
+            #     Button:
+            #         text: 'Arabic - Adjectives'
+            #         size: 300, 25
+            #         size_hint: None, None
+            #         on_release: root._fbrowser_success('SampleWBs\Arabic_Adjectives.xlsx')
+            #     Button:
+            #         text: 'Spanish - Home'
+            #         size: 300, 25
+            #         size_hint: None, None
+            #         on_release: root._fbrowser_success('SampleWBs\Spanish_Furniture.xlsx')
+
+
+        BoxLayout:
+            height: root.height / 2
+            size_hint_y: None
+            FileBrowser:
+                id: Open_File_Browser
+                on_success: root._fbrowser_success(self.selection)
+
+<TS>:
+    name: 'Trials'
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.size
+        Label:
+            id: Tok
+            font_name: 'times'
+            font_size: min(125, self.width/2)
+            pos_hint: {'center_x': 0.5}
+            size_hint: 1, .25
+            multiline: False
+        Button:
+            text: 'Next'
+            pos_hint: {'center_x': 0.5}
+            size_hint: 0.95, None
+            height: 50
+            on_release: root.next()
+        BoxLayout:
+            size: 1150, 100
+            size_hint: None, None
+            Label:
+                id: Suc
+                font_name: 'times'
+                font_size: 125
+                halign: 'left'
+                size_hint: 0.35, 1
+                pos_hint: {'x': .2}
+            BoxLayout:
+                orientation: 'vertical'
+                pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    id: Heads
+                    font_name: 'times'
+                    bold: True
+                    font_size: min(75, Heads.width / (len(Heads.ids) + 1))
+                BoxLayout:
+                    id: Deets
+                    font_name: 'times'
+
+        FloatLayout:
+            size_hint_y: None
+            height: 190
+            ArInput:
+                id: Resp
+                font_name: 'times'
+                pos_hint: {'x': root.width / 2}
+                size_y: 150
+                size_hint: (0.95, None)
+                pos_hint: {'center_x': .5, 'center_y': .58}
+                font_size: 75
+                multiline: False
+                halign: 'center'
+                text_validate_unfocus: False
+                on_text_validate: root.next()
+            FloatButton:
+                text: 'Settings'
+                pos_hint: {'x': .79, 'y': .1}
+                on_release: app.root.current = 'Settings'
+            FloatButton:
+                text: 'New File'
+                pos_hint: {'x': .86, 'y': .1}
+                on_release: app.root.current = 'Open'
+            FloatButton:
+                text: 'Quit'
+                pos_hint: {'x': .93, 'y': .1}
+                on_release: quit()
+
+<SS>:
+    name: 'Settings'
+    FloatLayout:
+        Label:
+            text: 'Settings'
+            font_name: 'times'
+            font_size: 100
+            size_hint: 1, 0.15
+            pos_hint: {'center_x': 0.5, 'top': 0.97}
+        CheckBox:
+            id: AB_Box
+            group: 'direction'
+            pos_hint: {'x': (((root.width - self.width - AB_Lab.width - BA_Box.width - BA_Lab.width)/2)/root.width), 'y': .75}
+            size_hint: None, 0.05
+            width: 50
+            active: True
+            on_active:
+                root.setFalse()
+        Label:
+            id: AB_Lab
+            pos_hint: {'x': (((root.width - AB_Box.width - self.width - BA_Box.width - BA_Lab.width)/2) + AB_Box.width)/root.width, 'y': .75}
+            size_hint: None, .05
+            width: 300
+            text_size: self.size
+            font_name: 'times'
+            font_size: 24
+        CheckBox:
+            id: BA_Box
+            pos_hint: {'x': (((root.width - AB_Box.width - AB_Lab.width - self.width - BA_Lab.width)/2) + AB_Box.width + AB_Lab.width)/root.width, 'y': .75}
+            size_hint: None, 0.05
+            width: 50
+            group: 'direction'
+            on_active:
+                root.setTrue()
+        Label
+            id: BA_Lab
+            pos_hint: {'x': (((root.width - AB_Box.width - AB_Lab.width - BA_Box.width - self.width)/2) + AB_Box.width + AB_Lab.width + BA_Box.width)/root.width, 'y': .75}
+            size_hint: None, .05
+            width: 300
+            text_size: self.size
+            font_name: 'times'
+            font_size: 24
+        FloatButton:
+            text: 'Go!'
+            pos_hint: {'x': .9, 'y': 0.03}
+            on_release: app.root.current = 'Trials'
