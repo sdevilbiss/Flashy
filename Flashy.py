@@ -8,6 +8,9 @@ from kivy.uix.label import Label
 from kivy.core.window import Window
 from ArAdjust import Reverser, Reshaper, isArabic
 
+
+##TEST NOTE FOR GIT
+
 Window.size = 1200, 800
 
 
