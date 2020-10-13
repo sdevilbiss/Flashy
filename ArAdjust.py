@@ -1,11 +1,10 @@
 # """
-# Adjust Arabic class. This will one day be exported to its own package.
-# It remains here during development. 2 functions
+# Adjust Arabic module?. 3 functions:
 # Reverser takes the arabic string and reverses its order.
 # Reshaper makes sure each letter is in its correct form by labeling its
 # location in a word and selecting the correct form from the nexted list.
+# isArabic tests if a character exists in the Arabic block of utf8.
 # """
-
 
 def Reverser(text):
     # Reverses order of characters in string text
@@ -93,8 +92,9 @@ def Reshaper(text):
                 charContext.append('Connect')
             # loops through context for the right condition
             for k, v in context.items():
-                for each in v:
-                    if each[0] == charContext[0] and each[1] == charContext[1]:
+                for flanks in v:
+                    # test condition. might have to check both indices for equivalency
+                    if flanks == charContext:
                         form = k
             # applies correct form to the list from full Arabic alphabet
             for each in AlifBa:
