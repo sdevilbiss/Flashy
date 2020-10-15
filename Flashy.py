@@ -8,9 +8,6 @@ from kivy.uix.label import Label
 from kivy.core.window import Window
 from ArAdjust import Reverser, Reshaper, isArabic
 
-
-##TEST NOTE FOR GIT
-
 Window.size = 1200, 800
 
 
@@ -26,7 +23,6 @@ class ArInput(TextInput):
         # adds typed character to end of underlying string. Formats it
         s.str = s.str + substring
         s.format()
-
 
     def do_backspace(s, from_undo=False, mode='bkspc'):
         # removes rightmost character to underlying string. Formats it.
@@ -69,7 +65,7 @@ class TS(Screen):
         s.goal = 1          # Index of the goal string in the row
 
     def loadfile(s, filename):
-        # load file and run ArAdjust if it contains any arabic characters
+        # load file and run ArAdjust on cells that contain arabic characters
         s.trials = [[Reshaper(Reverser(c.value)) if any(isArabic(y) for y in
                     c.value) else str(c.value) for c in row] for row in
                     xlrd.open_workbook(filename).sheet_by_index(0).get_rows()
